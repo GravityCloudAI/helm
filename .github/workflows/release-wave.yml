@@ -1,10 +1,11 @@
-name: Release Helm Chart
+name: Release Wave Helm Chart
 on:
   push:
     branches:
       - main
     paths:
       - 'charts/gravity-wave/Chart.yaml'
+  workflow_dispatch:
 
 jobs:
   releaseHelmChart:
