@@ -4,7 +4,7 @@ global:
   nodeSelector: []
 
 components:
-  gravityAgent:
+  gravityWave:
     deployment:
       name: gravity-wave
       replicas: 1
@@ -20,13 +20,55 @@ components:
           memory: "2048Mi"
           cpu: "1000m"
       env:
-        GRAVITY_API_KEY: ""
+        GRAVITY_API_KEY:
+          valueFrom:
+            secretKeyRef:
+              name: gravity-agent-secrets
+              key: gravity-api-key
         GRAVITY_API_URL: ""
+        GRAVITY_SOCKET_URL: ""
         POSTGRES_HOST: "postgres-gravity-service"
         POSTGRES_USER: ""
-        POSTGRES_PASSWORD: ""
-        POSTGRES_DB: ""
-        POSTGRES_PORT: "5432"
+        POSTGRES_PASSWORD:
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: postgres-password
+        GITHUB_APP_ID:
+          valueFrom:
+            secretKeyRef:
+              name: gravity-agent-secrets
+              key: github-app-id
+        GITHUB_WEBHOOK_SECRET:
+          valueFrom:
+            secretKeyRef:
+              name: gravity-agent-secrets
+              key: github-webhook-secret
+        GITHUB_CLIENT_ID:
+          valueFrom:
+            secretKeyRef:
+              name: gravity-agent-secrets
+              key: github-client-id
+        GITHUB_CLIENT_SECRET:
+          valueFrom:
+            secretKeyRef:
+              name: gravity-agent-secrets
+              key: github-client-secret
+        GITHUB_PRIVATE_KEY: # this is base64 encoded
+          valueFrom:
+            secretKeyRef:
+              name: gravity-agent-secrets
+              key: github-private-key
+        GITHUB_OAUTH_REDIRECT_URL:
+          valueFrom:
+            secretKeyRef:
+              name: gravity-agent-secrets
+              key: github-oauth-redirect-url
+        GITHUB_CALLBACK_URL:
+          valueFrom:
+            secretKeyRef:
+              name: gravity-agent-secrets
+              key: github-callback-url
     service:
       name: gravity-wave-service
       type: ClusterIP
@@ -43,15 +85,27 @@ components:
         pullPolicy: IfNotPresent
       resources:
         requests:
-          memory: "512Mi"
+          memory: "1Gi"
           cpu: "500m"
         limits:
-          memory: "1024Mi"
+          memory: "2Gi"
           cpu: "1000m"
       env:
         POSTGRES_DB: ""
         POSTGRES_USER: ""
-        POSTGRES_PASSWORD: ""
+        POSTGRES_PASSWORD:
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: postgres-password
+      volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+          subPath: postgres
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-gravity-pvc
     service:
       name: postgres-gravity-service
       type: ClusterIP
@@ -63,3 +117,20 @@ persistence:
     name: postgres-gravity-pvc
     size: "1Gi"
     accessMode: ReadWriteOnce
+
+secrets:
+  gravityAgent:
+    name: gravity-wave-secrets
+    data:
+      gravity-api-key: ""
+      github-app-id: ""
+      github-webhook-secret: ""
+      github-client-id: ""
+      github-client-secret: ""
+      github-private-key: ""
+      github-oauth-redirect-url: ""
+      github-callback-url: ""
+  postgres:
+    name: postgres-secrets
+    data:
+      postgres-password: ""
