@@ -18,6 +18,20 @@ entries:
   gravity-wave:
   - apiVersion: v2
     appVersion: 0.1.1
+    created: "2025-02-12T09:34:23.374262991Z"
+    description: Helm chart to deploy the Gravity Cloud Wave Integration Tool
+    digest: b065b4405a3ebcc44576020591eff6bae20b6551b77f74db99d929bd4887e711
+    icon: https://gravitycloud.ai/favicon.png
+    maintainers:
+    - email: vatsal@gravitycloud.ai
+      name: Vatsal Bajpai
+    name: gravity-wave
+    type: application
+    urls:
+    - https://github.com/GravityCloudAI/helm/releases/download/gravity-wave-0.1.3/gravity-wave-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 0.1.1
     created: "2025-02-12T09:31:56.132832094Z"
     description: Helm chart to deploy the Gravity Cloud Wave Integration Tool
     digest: 1718b5e35c78d9ddd61794275edad428e6a573ef756e95111f79d6e643d192ac
@@ -44,4 +58,4 @@ entries:
     urls:
     - https://github.com/GravityCloudAI/helm/releases/download/gravity-wave-0.1.1/gravity-wave-0.1.1.tgz
     version: 0.1.1
-generated: "2025-02-12T09:31:56.132840089Z"
+generated: "2025-02-12T09:34:23.374279282Z"
