@@ -74,6 +74,20 @@ components:
       type: ClusterIP
       port: 8080
       targetPort: 8080
+    ingress:
+      enabled: true
+      className: "nginx"
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      hosts:
+        - host: gravity-wave.example.com
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: gravity-wave-tls
+          hosts:
+            - gravity-wave.example.com
 
   postgres:
     deployment:
