@@ -23,7 +23,7 @@ components:
         GRAVITY_API_KEY:
           valueFrom:
             secretKeyRef:
-              name: gravity-agent-secrets
+              name: gravity-wave-secrets
               key: gravity-api-key
         GRAVITY_API_URL: ""
         GRAVITY_SOCKET_URL: ""
@@ -37,38 +37,28 @@ components:
         GITHUB_APP_ID:
           valueFrom:
             secretKeyRef:
-              name: gravity-agent-secrets
+              name: gravity-wave-secrets
               key: github-app-id
         GITHUB_WEBHOOK_SECRET:
           valueFrom:
             secretKeyRef:
-              name: gravity-agent-secrets
+              name: gravity-wave-secrets
               key: github-webhook-secret
         GITHUB_CLIENT_ID:
           valueFrom:
             secretKeyRef:
-              name: gravity-agent-secrets
+              name: gravity-wave-secrets
               key: github-client-id
         GITHUB_CLIENT_SECRET:
           valueFrom:
             secretKeyRef:
-              name: gravity-agent-secrets
+              name: gravity-wave-secrets
               key: github-client-secret
         GITHUB_PRIVATE_KEY: # this is base64 encoded
           valueFrom:
             secretKeyRef:
-              name: gravity-agent-secrets
+              name: gravity-wave-secrets
               key: github-private-key
-        GITHUB_OAUTH_REDIRECT_URL:
-          valueFrom:
-            secretKeyRef:
-              name: gravity-agent-secrets
-              key: github-oauth-redirect-url
-        GITHUB_CALLBACK_URL:
-          valueFrom:
-            secretKeyRef:
-              name: gravity-agent-secrets
-              key: github-callback-url
     service:
       name: gravity-wave-service
       type: ClusterIP
@@ -133,7 +123,7 @@ persistence:
     accessMode: ReadWriteOnce
 
 secrets:
-  gravityAgent:
+  gravityWave:
     name: gravity-wave-secrets
     data:
       gravity-api-key: ""
@@ -142,8 +132,6 @@ secrets:
       github-client-id: ""
       github-client-secret: ""
       github-private-key: ""
-      github-oauth-redirect-url: ""
-      github-callback-url: ""
   postgres:
     name: postgres-secrets
     data:
