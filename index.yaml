@@ -2,6 +2,20 @@ apiVersion: v1
 entries:
   gravity-ci-cd-agent:
   - apiVersion: v2
+    appVersion: 1.0.21
+    created: "2025-02-14T09:01:03.804260639Z"
+    description: Helm chart to deploy the Gravity Cloud CI/CD Agent for ArgoCD
+    digest: e2a41920d5f3449c3a0a7c676143771d5280657b83cf5184556003eaba75be08
+    icon: https://gravitycloud.ai/favicon.png
+    maintainers:
+    - email: vatsal@gravitycloud.ai
+      name: Vatsal Bajpai
+    name: gravity-ci-cd-agent
+    type: application
+    urls:
+    - https://github.com/GravityCloudAI/helm/releases/download/gravity-ci-cd-agent-1.0.28/gravity-ci-cd-agent-1.0.28.tgz
+    version: 1.0.28
+  - apiVersion: v2
     appVersion: 1.0.20
     created: "2025-02-06T09:48:06.400055417Z"
     description: Helm chart to deploy the Gravity Cloud CI/CD Agent for ArgoCD
@@ -72,4 +86,4 @@ entries:
     urls:
     - https://github.com/GravityCloudAI/helm/releases/download/gravity-wave-0.1.1/gravity-wave-0.1.1.tgz
     version: 0.1.1
-generated: "2025-02-12T09:59:20.330981503Z"
+generated: "2025-02-14T09:01:03.93867157Z"
