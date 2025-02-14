@@ -27,12 +27,12 @@ components:
               key: gravity-api-key
         GRAVITY_API_URL: ""
         GRAVITY_SOCKET_URL: ""
-        POSTGRES_HOST: "postgres-gravity-service"
+        POSTGRES_HOST: "postgres-gravity-wave-service"
         POSTGRES_USER: ""
         POSTGRES_PASSWORD:
           valueFrom:
             secretKeyRef:
-              name: postgres-secrets
+              name: postgres-wave-secrets
               key: postgres-password
         GITHUB_APP_ID:
           valueFrom:
@@ -81,7 +81,7 @@ components:
 
   postgres:
     deployment:
-      name: postgres-gravity
+      name: postgres-gravity-wave
       replicas: 1
       image:
         repository: postgres
@@ -100,7 +100,7 @@ components:
         POSTGRES_PASSWORD:
           valueFrom:
             secretKeyRef:
-              name: postgres-secrets
+              name: postgres-wave-secrets
               key: postgres-password
       volumeMounts:
         - name: postgres-data
@@ -109,16 +109,16 @@ components:
       volumes:
         - name: postgres-data
           persistentVolumeClaim:
-            claimName: postgres-gravity-pvc
+            claimName: postgres-gravity-wave-pvc
     service:
-      name: postgres-gravity-service
+      name: postgres-gravity-wave-service
       type: ClusterIP
       port: 5432
       targetPort: 5432
 
 persistence:
   postgres:
-    name: postgres-gravity-pvc
+    name: postgres-gravity-wave-pvc
     size: "1Gi"
     accessMode: ReadWriteOnce
 
@@ -133,6 +133,6 @@ secrets:
       github-client-secret: ""
       github-private-key: ""
   postgres:
-    name: postgres-secrets
+    name: postgres-wave-secrets
     data:
       postgres-password: ""
