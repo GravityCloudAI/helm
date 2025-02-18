@@ -21,6 +21,10 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with $.Values.global.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ $component.deployment.name }}
           image: "{{ $component.deployment.image.repository }}:{{ $component.deployment.image.tag }}"
