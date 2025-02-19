@@ -5,7 +5,7 @@ on:
       - main
     paths:
       - 'charts/gravity-ci-cd-agent/Chart.yaml'
-      - 'charts/gravity-wave/Chart.yaml'
+      - 'charts/gravity-matter/Chart.yaml'
   workflow_dispatch:
 
 jobs:
