@@ -3,8 +3,8 @@ name: gravity-matter
 description: Helm chart to deploy Matter AI Code Review Agent
 type: application
 icon: https://gravitycloud.ai/favicon.png
-appVersion: 0.1.3
-version: 0.1.6
+appVersion: 0.1.4
+version: 0.1.7
 maintainers:
   - name: Vatsal Bajpai
     email: vatsal@gravitycloud.ai

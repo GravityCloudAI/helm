@@ -5,12 +5,12 @@ global:
   annotations: []
 
 components:
-  gravityWave:
+  gravityMatter:
     deployment:
-      name: gravity-wave
+      name: gravity-matter
       replicas: 1
       image:
-        repository: gravitycloud/gravity-wave
+        repository: gravitycloud/matter
         tag: latest
         pullPolicy: Always
       resources:
@@ -24,53 +24,55 @@ components:
         GRAVITY_API_KEY:
           valueFrom:
             secretKeyRef:
-              name: gravity-wave-secrets
+              name: gravity-matter-secrets
               key: gravity-api-key
         GRAVITY_API_URL: ""
         GRAVITY_SOCKET_URL: ""
-        POSTGRES_HOST: "postgres-gravity-wave-service"
+        POSTGRES_HOST: "postgres-gravity-matter-service"
         POSTGRES_USER: ""
         POSTGRES_PASSWORD:
           valueFrom:
             secretKeyRef:
-              name: postgres-wave-secrets
+              name: postgres-matter-secrets
               key: postgres-password
-        GITHUB_APP_NAME: "gravity-wave"
+        GITHUB_APP_NAME: "gravity-matter"
         GITHUB_APP_ID:
           valueFrom:
             secretKeyRef:
-              name: gravity-wave-secrets
+              name: gravity-matter-secrets
               key: github-app-id
         GITHUB_WEBHOOK_SECRET:
           valueFrom:
             secretKeyRef:
-              name: gravity-wave-secrets
+              name: gravity-matter-secrets
               key: github-webhook-secret
         GITHUB_CLIENT_ID:
           valueFrom:
             secretKeyRef:
-              name: gravity-wave-secrets
+              name: gravity-matter-secrets
               key: github-client-id
         GITHUB_CLIENT_SECRET:
           valueFrom:
             secretKeyRef:
-              name: gravity-wave-secrets
+              name: gravity-matter-secrets
               key: github-client-secret
         GITHUB_PRIVATE_KEY: # this is base64 encoded
           valueFrom:
             secretKeyRef:
-              name: gravity-wave-secrets
+              name: gravity-matter-secrets
               key: github-private-key
         AI_API_KEY:
           valueFrom:
             secretKeyRef:
-              name: gravity-wave-secrets
+              name: gravity-matter-secrets
               key: ai-api-key
         AI_MODEL: "gpt-4o-mini-2024-07-18"
         AI_PROVIDER: "openai"
         ENABLE_PR_REVIEW_COMMENT: "true"
+        # CUSTOM_PROMPT_SYSTEM: "You are a code review agent that reviews code and provides feedback on the code."
+        # CUSTOM_PROMPT_USER: "Review the following code and provide feedback on the code. Following is the Pull Request to review: {{prData}} and output the response in JSON format as following: { summary: { description: AI generated description of the Pull Request in markdown string }, quality: { score: between 0-100, recommendations: [string array for any code/logic level changes that code make the PR better and not what is already good] }, checklist: { score: number of items that pass in the checklist, recommendations: [string array for items that fail and what to do] }, review: { event: \"APPROVE\" | \"REQUEST_CHANGES\" | \"COMMENT\", reviewBody?: string, reviewComments?: { path: string; body: string; position: number }[] }, codeChangeGeneration: { event: \"APPROVE\" | \"REQUEST_CHANGES\" | \"COMMENT\", reviewBody?: string, reviewComments?: { path: string; body: string; position: number }[] } }"
     service:
-      name: gravity-wave-service
+      name: gravity-matter-service
       type: ClusterIP
       port: 8080
       targetPort: 8080
@@ -80,18 +82,18 @@ components:
       annotations:
         nginx.ingress.kubernetes.io/ssl-redirect: "true"
       hosts:
-        - host: gravity-wave.example.com
+        - host: gravity-matter.example.com
           paths:
             - path: /
               pathType: Prefix
       tls:
-        - secretName: gravity-wave-tls
+        - secretName: gravity-matter-tls
           hosts:
-            - gravity-wave.example.com
+            - gravity-matter.example.com
 
   postgres:
     deployment:
-      name: postgres-gravity-wave
+      name: postgres-gravity-matter
       replicas: 1
       image:
         repository: postgres
@@ -110,7 +112,7 @@ components:
         POSTGRES_PASSWORD:
           valueFrom:
             secretKeyRef:
-              name: postgres-wave-secrets
+              name: postgres-matter-secrets
               key: postgres-password
       volumeMounts:
         - name: postgres-data
@@ -119,22 +121,22 @@ components:
       volumes:
         - name: postgres-data
           persistentVolumeClaim:
-            claimName: postgres-gravity-wave-pvc
+            claimName: postgres-gravity-matter-pvc
     service:
-      name: postgres-gravity-wave-service
+      name: postgres-gravity-matter-service
       type: ClusterIP
       port: 5432
       targetPort: 5432
 
 persistence:
   postgres:
-    name: postgres-gravity-wave-pvc
+    name: postgres-gravity-matter-pvc
     size: "1Gi"
     accessMode: ReadWriteOnce
 
 secrets:
-  gravityWave:
-    name: gravity-wave-secrets
+  gravityMatter:
+    name: gravity-matter-secrets
     data:
       gravity-api-key: ""
       github-app-id: ""
@@ -144,6 +146,6 @@ secrets:
       github-private-key: ""
       ai-api-key: ""
   postgres:
-    name: postgres-wave-secrets
+    name: postgres-matter-secrets
     data:
       postgres-password: ""
