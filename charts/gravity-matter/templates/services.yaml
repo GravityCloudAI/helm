@@ -1,4 +1,5 @@
 {{- range $componentName, $component := .Values.components }}
+{{- if $component.enabled }}
 ---
 apiVersion: v1
 kind: Service
@@ -15,4 +16,5 @@ spec:
       targetPort: {{ $component.service.targetPort }}
   selector:
     app: {{ $component.deployment.name }}
+{{- end }}
 {{- end }}

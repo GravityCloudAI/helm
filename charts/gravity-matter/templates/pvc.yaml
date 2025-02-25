@@ -1,4 +1,5 @@
 {{- range $name, $config := .Values.persistence }}
+{{- if $config.enabled }}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -17,4 +18,5 @@ spec:
     requests:
       storage: {{ $config.size }}
   storageClassName: {{ $.Values.global.storageClass }}
+{{- end }}
 {{- end }}

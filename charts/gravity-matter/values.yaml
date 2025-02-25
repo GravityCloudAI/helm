@@ -92,6 +92,7 @@ components:
             - gravity-matter.example.com
 
   postgres:
+    enabled: true
     deployment:
       name: postgres-gravity-matter
       replicas: 1
@@ -130,6 +131,7 @@ components:
 
 persistence:
   postgres:
+    enabled: true
     name: postgres-gravity-matter-pvc
     size: "1Gi"
     accessMode: ReadWriteOnce
