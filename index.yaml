@@ -31,6 +31,20 @@ entries:
     version: 1.0.27
   gravity-matter:
   - apiVersion: v2
+    appVersion: 0.1.5
+    created: "2025-03-10T07:26:07.519817485Z"
+    description: Helm chart to deploy Matter AI Code Review Agent
+    digest: 817f862e27105a4bf44fd88e59dc023eb3e1fd2b7be41346c2228ed87f09a1b7
+    icon: https://gravitycloud.ai/favicon.png
+    maintainers:
+    - email: vatsal@gravitycloud.ai
+      name: Vatsal Bajpai
+    name: gravity-matter
+    type: application
+    urls:
+    - https://github.com/GravityCloudAI/helm/releases/download/gravity-matter-0.1.9/gravity-matter-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v2
     appVersion: 0.1.4
     created: "2025-02-25T10:11:41.3706452Z"
     description: Helm chart to deploy Matter AI Code Review Agent
@@ -143,4 +157,4 @@ entries:
     urls:
     - https://github.com/GravityCloudAI/helm/releases/download/gravity-wave-0.1.1/gravity-wave-0.1.1.tgz
     version: 0.1.1
-generated: "2025-02-25T10:11:41.3706669Z"
+generated: "2025-03-10T07:26:07.519843284Z"
