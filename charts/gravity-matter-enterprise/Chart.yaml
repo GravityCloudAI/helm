@@ -1,0 +1,10 @@
+apiVersion: v2
+name: gravity-matter-enterprise
+description: Helm chart to deploy Matter AI Code Review Backend for Enterprise
+type: application
+icon: https://matterai.dev/favicon.png
+appVersion: 0.1.5
+version: 0.1.5
+maintainers:
+  - name: Vatsal Bajpai
+    email: vatsal@matterai.dev

@@ -1,0 +1,146 @@
+global:
+  namespace: "matterai"
+  storageClass: "standard"
+  nodeSelector: []
+  annotations: []
+
+imageCredentials:
+  - name: matterenterpriseregistrycredentials
+    create: true
+    registry: https://index.docker.io/v1/
+    username: ""
+    password: ""
+    email: "" # Optional
+    # Or use direct auth token
+    auth: "" # Base64 encoded auth token
+imagePullSecrets: [matterenterpriseregistrycredentials]
+
+components:
+  matterBackend:
+    deployment:
+      name: matter-backend
+      replicas: 1
+      image:
+        repository: gravitycloud/matter-enterprise
+        tag: latest
+        pullPolicy: Always
+      resources:
+        requests:
+          memory: "256Mi"
+          cpu: "250m"
+        limits:
+          memory: "512Mi"
+          cpu: "500m"
+      env:
+        POSTGRES_HOST: "postgres-matter-service"
+        POSTGRES_USER: ""
+        POSTGRES_PASSWORD:
+          valueFrom:
+            secretKeyRef:
+              name: postgres-matter-secrets
+              key: postgres-password
+    service:
+      name: matter-backend-service
+      type: ClusterIP
+      port: 8080
+      targetPort: 8080
+    ingress:
+      enabled: true
+      className: "nginx"
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      hosts:
+        - host: matterai.example.com
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: matterai-tls
+          hosts:
+            - matterai.example.com
+  matterFrontend:
+    enabled: true
+    deployment:
+      name: matter-frontend
+      replicas: 1
+      image:
+        repository: gravitycloud/matter-frontend
+        tag: latest
+      resources:
+        requests:
+          memory: "256Mi"
+          cpu: "250m"
+        limits:
+          memory: "512Mi"
+          cpu: "500m"
+      env:
+        REACT_APP_BACKEND_URL: "https://matter-backend-service.matterai.svc.cluster.local:8080"
+    service:
+      name: matter-frontend-service
+      type: ClusterIP
+      port: 3000
+      targetPort: 3000
+    ingress:
+      enabled: false
+      className: "nginx"
+      annotations:
+        nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      hosts:
+        - host: matterai.example.com
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: matterai-tls
+          hosts:
+            - matterai.example.com
+  postgres:
+    enabled: true
+    deployment:
+      name: postgres-matter
+      replicas: 1
+      image:
+        repository: postgres
+        tag: latest
+        pullPolicy: IfNotPresent
+      resources:
+        requests:
+          memory: "256Mi"
+          cpu: "250m"
+        limits:
+          memory: "512Mi"
+          cpu: "500m"
+      env:
+        POSTGRES_DB: ""
+        POSTGRES_USER: ""
+        POSTGRES_PASSWORD:
+          valueFrom:
+            secretKeyRef:
+              name: postgres-matter-secrets
+              key: postgres-password
+      volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+          subPath: postgres
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-matter-pvc
+    service:
+      name: postgres-matter-service
+      type: ClusterIP
+      port: 5432
+      targetPort: 5432
+
+persistence:
+  postgres:
+    enabled: true
+    name: postgres-matter-pvc
+    size: "1Gi"
+    accessMode: ReadWriteOnce
+
+secrets:
+  postgres:
+    name: postgres-matter-secrets
+    data:
+      postgres-password: ""
