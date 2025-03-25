@@ -58,7 +58,6 @@ components:
         ENV: "production"
         NAMESPACE: "gravity-cloud"
         GITHUB_REPOSITORIES: ""
-        GIT_BRANCHES_ALLOWED: ""
         GITHUB_JOB_NAME: ""
         AWS_ACCOUNT_ID: ""
         POSTGRES_HOST: "postgres-gravity-service"
