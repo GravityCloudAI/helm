@@ -1,5 +1,5 @@
 apiVersion: v2
-name: gravity-matter-enterprise
+name: matter-ai-enterprise
 description: Helm chart to deploy Matter AI Code Review Backend for Enterprise
 type: application
 icon: https://matterai.dev/favicon.png
