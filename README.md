@@ -16,4 +16,4 @@
 
 1. `helm repo add gravity https://gravitycloudai.github.io/helm`
 2. `helm repo update`
-3. `helm upgrade --install matter-ai-enterprise gravity/matter-enterprise -f matter-enterprise-values.yaml -n matterai --create-namespace`
+3. `helm upgrade --install matter-ai-enterprise gravity/matter-ai-enterprise -f matter-enterprise-values.yaml -n matterai --create-namespace`
