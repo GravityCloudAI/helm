@@ -17,6 +17,7 @@ imagePullSecrets: [matterenterpriseregistrycredentials]
 
 components:
   matterBackend:
+    enabled: true
     deployment:
       name: matter-backend
       replicas: 1

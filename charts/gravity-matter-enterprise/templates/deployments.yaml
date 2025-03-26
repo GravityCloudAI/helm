@@ -18,6 +18,10 @@ spec:
       labels:
         app: {{ $component.deployment.name }}
     spec:
+      imagePullSecrets: 
+      {{- range $.Values.imageCredentials }}
+      - name: {{ .name }}
+      {{- end }}
       {{- with $.Values.global.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
