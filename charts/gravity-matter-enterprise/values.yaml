@@ -33,6 +33,7 @@ components:
           memory: "512Mi"
           cpu: "500m"
       env:
+        EMAIL_DOMAIN: "example.com"
         POSTGRES_HOST: "postgres-matter-service"
         POSTGRES_USER: ""
         POSTGRES_PASSWORD:
