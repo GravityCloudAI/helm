@@ -1,0 +1,97 @@
+{{- if .Values.components.matterFrontend.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: matter-frontend-config
+  namespace: {{ .Values.global.namespace }}
+data:
+  config.js: |
+    window.MATTER_CONFIG = {
+      BACKEND_URL: "/api"
+    };
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: matter-nginx-config
+  namespace: {{ .Values.global.namespace }}
+data:
+  nginx.conf: |
+    server {
+      listen 80;
+      server_name localhost;
+      root /usr/share/nginx/html;
+      index index.html;
+
+      location / {
+          try_files $uri $uri/ /index.html;
+      }
+
+      location /config/config.js {
+          add_header Content-Type application/javascript;
+          add_header Cache-Control no-cache;
+          return 200 'window.MATTER_CONFIG = {
+              BACKEND_URL: "/api"
+          };';
+      }
+
+      location /api {
+        rewrite ^/api/(.*) /$1 break;
+        proxy_pass http://{{ .Values.components.matterBackend.service.name }}.{{ .Values.global.namespace }}.svc.cluster.local:{{ .Values.components.matterBackend.service.port }};
+
+        proxy_set_header Host $http_host;
+
+        proxy_set_header X-Real-IP $remote_addr;
+
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        proxy_pass_request_headers on;
+
+        proxy_method $request_method;
+
+        proxy_pass_request_body on;
+
+        proxy_set_header X-Original-URI $request_uri;
+
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_set_body $request_body;
+
+        proxy_buffering off;
+      }
+
+      error_page 404 /index.html;
+      add_header X-Frame-Options "SAMEORIGIN";
+      add_header X-XSS-Protection "1; mode=block";
+      add_header X-Content-Type-Options "nosniff";
+    }
+      
+      
+
+
+# ---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: serve-config
+#   namespace: {{ .Values.global.namespace }}
+# data:
+#   serve.json: |
+#     {
+#       "rewrites": [
+#         { "source": "/config/config.js", "destination": "/config/config.js" },
+#         { "source": "/api/*", "destination": "http://{{ .Values.components.matterBackend.service.name }}.{{ .Values.global.namespace }}.svc.cluster.local:{{ .Values.components.matterBackend.service.port }}/$1" },
+#         { "source": "/**", "destination": "/index.html" }
+#       ],
+#       "headers": [
+#         {
+#           "source": "/config/config.js",
+#           "headers": [
+#             { "key": "Content-Type", "value": "application/javascript" },
+#             { "key": "Cache-Control", "value": "no-cache" }
+#           ]
+#         }
+#       ]
+#     }
+{{- end }}

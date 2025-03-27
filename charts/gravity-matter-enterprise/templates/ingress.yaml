@@ -36,3 +36,43 @@ spec:
           {{- end }}
     {{- end }}
 {{- end }}
+
+{{- if .Values.components.matterFrontend.ingress.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.components.matterFrontend.deployment.name }}-ingress
+  namespace: {{ .Values.global.namespace }}
+  {{- with .Values.components.matterFrontend.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.components.matterFrontend.ingress.className }}
+  {{- if .Values.components.matterFrontend.ingress.tls }}
+  tls:
+    {{- range .Values.components.matterFrontend.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.components.matterFrontend.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ $.Values.components.matterFrontend.service.name }}
+                port:
+                  number: {{ $.Values.components.matterFrontend.service.port }}
+          {{- end }}
+    {{- end }}
+{{- end }}
