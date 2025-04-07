@@ -3,8 +3,8 @@ name: matter-ai-enterprise
 description: Helm chart to deploy Matter AI Code Review Backend for Enterprise
 type: application
 icon: https://matterai.dev/favicon.png
-appVersion: 0.1.9
-version: 0.1.13
+appVersion: 0.1.12
+version: 0.1.14
 maintainers:
   - name: Vatsal Bajpai
     email: vatsal@matterai.dev
