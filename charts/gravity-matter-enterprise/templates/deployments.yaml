@@ -38,17 +38,27 @@ spec:
           command:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with $component.deployment.env }}
           env:
-            {{- range $key, $value := . }}
+            {{- range $key, $value := $component.deployment.env }}
             - name: {{ $key }}
+              {{- if eq $key "MATTER_API_ENDPOINT" }}
+              {{- if eq $componentName "matterMCP" }}
+              value: "http://{{ $.Values.components.matterBackend.service.name }}.{{ $.Values.global.namespace }}.svc.cluster.local:{{ $.Values.components.matterBackend.service.port }}"
+              {{- else }}
               {{- if kindIs "map" $value }}
               {{- toYaml $value | nindent 14 }}
               {{- else }}
               value: {{ $value | quote }}
               {{- end }}
+              {{- end }}
+              {{- else }}
+              {{- if kindIs "map" $value }}
+              {{- toYaml $value | nindent 14 }}
+              {{- else }}
+              value: {{ $value | quote }}
+              {{- end }}
+              {{- end }}
             {{- end }}
-          {{- end }}
           {{- with $component.deployment.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
