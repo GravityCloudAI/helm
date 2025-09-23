@@ -188,6 +188,20 @@ entries:
     version: 0.1.1
   matter-ai-enterprise:
   - apiVersion: v2
+    appVersion: 0.1.59
+    created: "2025-09-23T08:29:08.125453161Z"
+    description: Helm chart to deploy Matter AI Code Review Backend for Enterprise
+    digest: b47a8724ba9d558c191d8eb99fdba1091bafaacbbfbe9de20e57bf7c22688880
+    icon: https://matterai.dev/favicon.png
+    maintainers:
+    - email: vatsal@matterai.so
+      name: Vatsal Bajpai
+    name: matter-ai-enterprise
+    type: application
+    urls:
+    - https://github.com/GravityCloudAI/helm/releases/download/matter-ai-enterprise-0.1.59/matter-ai-enterprise-0.1.59.tgz
+    version: 0.1.59
+  - apiVersion: v2
     appVersion: 0.1.58
     created: "2025-09-04T10:21:14.553417519Z"
     description: Helm chart to deploy Matter AI Code Review Backend for Enterprise
@@ -369,4 +383,4 @@ entries:
     urls:
     - https://github.com/GravityCloudAI/helm/releases/download/matter-ai-enterprise-0.1.5/matter-ai-enterprise-0.1.5.tgz
     version: 0.1.5
-generated: "2025-09-04T10:21:14.553553449Z"
+generated: "2025-09-23T08:29:08.125576821Z"
