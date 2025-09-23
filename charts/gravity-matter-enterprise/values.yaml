@@ -125,10 +125,6 @@ components:
           cpu: "500m"
       env:
         MATTER_API_ENDPOINT: "example.com"
-      volumes:
-        - name: runtime-config
-          configMap:
-            name: matter-ai-mcp-config
     service:
       name: matter-mcp-server-service
       type: ClusterIP
