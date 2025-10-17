@@ -41,6 +41,7 @@ components:
             secretKeyRef:
               name: postgres-matter-secrets
               key: postgres-password
+        MATTER_API_ENDPOINT: "matterai.example.com"
     service:
       name: matter-backend-service
       type: ClusterIP
